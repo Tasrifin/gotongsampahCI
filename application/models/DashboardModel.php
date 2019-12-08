@@ -37,7 +37,7 @@ class DashboardModel extends CI_Model
         return $data->result();     
     }    
 
-    public function updateDonasi($id_donasi,$fkid_user,$judul,$jenis,$jumlah,$desc)
+    public function updateDonasi($id_donasi,$fkid_user,$judul,$jenis,$jumlah,$desc,$keypicker)
     {
         $data = array(
             'fkid_user' => $fkid_user,
@@ -45,20 +45,10 @@ class DashboardModel extends CI_Model
             'jenis_donasi' => $jenis,
             'jumlah_donasi' => $jumlah,
             'informasi_donasi' => $desc,
+            'keypicker' => $keypicker,
         );
         $this->db->where('id_donasi',$id_donasi);
         $query = $this->db->update('donasi',$data);
-        return $this->db->affected_rows();
-    }
-
-    public function gambar_donasi($id_donasi,$gambar)
-    {
-        $data = array(
-            'id_donasi' => $id_donasi,
-            'gambar' => $gambar,
-        );
-        $this->db->where('id_donasi',$id_donasi);
-        $query = $this->db->update('gambar_donasi',$data);
         return $this->db->affected_rows();
     }
 

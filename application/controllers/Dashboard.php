@@ -207,13 +207,13 @@ class Dashboard extends CI_Controller
                 $jumlah = $this->input->post('jumlah_donasi');
                 $desc = $this->input->post('deskripsi_donasi');
                 $desc = $desc.' ';
+                $keypicker = time() . $this->generateRandomString();
+                $keypicker = $keypicker . '' . $_FILES['input_foto']['name'];
+                $keypicker = preg_replace('/\s+/', '', $keypicker);
 
-                $resp = $this->DashboardModel->updateDonasi($id_donasi, $fkid_user, $judul, $jenis, $jumlah, $desc);
+                $resp = $this->DashboardModel->updateDonasi($id_donasi, $fkid_user, $judul, $jenis, $jumlah, $desc, $keypicker);
                 if ($resp) {
                     if ($this->input->post('update_foto') == "Y") {
-                        $keypicker = time() . $this->generateRandomString();
-                        $keypicker = $keypicker . '' . $_FILES['input_foto']['name'];
-                        $keypicker = preg_replace('/\s+/', '', $keypicker);
                         $_FILES['input_foto']['name'] = $keypicker;
                         $config['image_library'] = 'gd2';
                         $config['upload_path'] = './cdn/img';
@@ -235,24 +235,21 @@ class Dashboard extends CI_Controller
                             $config['new_image'] = './cdn/img/' . $gbr['file_name'];
                             $this->load->library('image_lib', $config);
                             if(!$this->image_lib->resize()){
-                                echo $this->image_lib->display_errors();
-                            }
-                            $rsp = $this->DashboardModel->gambar_donasi($id_donasi, $keypicker);
-                            if ($rsp) {
+                                $output = array(
+                                    'error' => true,
+                                    'msg' => "Berhasil memperbaharui donasi tapi gagal memperbaharui gambar",
+                                );
+                                echo json_encode($output);
+                            }else{
                                 $output = array(
                                     'error' => false,
                                     'msg' => "Berhasil memperbaharui donasi beserta gambar",
                                     'id' => $id_donasi,
                                 );
                                 echo json_encode($output);
-                            } else {
-                                $output = array(
-                                    'error' => true,
-                                    'msg' => "Gagal memperbaharui donasi beserta gambar",
-                                );
-                                echo json_encode($output);
                             }
-                        } else {
+
+                        }else {
                             $output = array(
                                 'error' => true,
                                 'msg' => $this->upload->display_errors(),
@@ -303,6 +300,44 @@ class Dashboard extends CI_Controller
             
         }
         echo json_encode($output);
+    }
+
+    public function deleteData()
+    {
+        $id_donasi = $this->input->get('id_donasi');
+        $id_creator = $this->input->get('id_creator');
+        $myID = $this->session->user[0]['id_user'];
+        if($id_creator != $myID){
+            $output = 0;
+            
+        }
+        else{
+            $rsp = $this->DashboardModel->getDel($id_donasi,$myID);
+            if (empty($rsp)) {
+                $output = array(
+                    'stat' => 0,
+                );  
+            } else {
+                $rsp_ = $rsp['0'];
+                if (empty($rsp_['fkid_mitra']) && $rsp_['fkid_user'] == $myID) {
+                    //delete picture first
+                    
+                    $output = array(
+                        'stat' => 1,
+                    );  
+                } else if (!empty($rsp_['fkid_mitra']) && $rsp_['fkid_user'] == $myID) {
+                    $output = array(
+                        'stat' => 2,
+                    );  
+                } else if ($rsp_['fkid_user'] != $myID) {
+                    $output = array(
+                        'stat' => 0,
+                    );  
+                }
+            }            
+        }
+        echo json_encode($output);
+
     }
 
 

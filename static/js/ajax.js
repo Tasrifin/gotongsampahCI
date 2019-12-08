@@ -313,6 +313,8 @@ $(document).ready(function () {
         $("#detail_modal").modal('show');
     })
 
+
+
     $('.container').on('click', '.konfirmasi_submit', function () {
         var id_donasi = $('.modal_konfirmasi').data('id_donasi');
         var creator = $('.modal_konfirmasi').data('id_creator');
@@ -343,6 +345,13 @@ $(document).ready(function () {
         });
 
     });
+
+    $('#delete_').on('hidden.bs.modal', function () {
+        var id = $('.modal_delete').attr('data');
+        getDataEdit(id);
+        $("#detail_modal").modal('show');
+    })
+    
     var del_title = $("#delete_").find('.modal-title').text();
 
     $('.container').on('click', '.modal_delete', function () {
@@ -362,10 +371,15 @@ $(document).ready(function () {
                 if(response == 0)
                 {
                     $("#delete_").find('.del-word').text("Tidak dapat mengakses donasi milik orang lain!");
+                    $("#delete_").find('#delData').attr('hidden',true);
                 }else if(response == 1){
                     $("#delete_").find('.del-word').text("Apakah Anda yakin akan menghapus data ini ?");
+                    $("#delete_").find('#delData').removeAttr('hidden');
+                    $("#delete_").find('#delData').attr('data-id_donasi',id_donasi);
+                    $("#delete_").find('#delData').attr('data-id_creator',id_creator);
                 }else if(response == 2){
                     $("#delete_").find('.del-word').text("Sampah telah diambil oleh Mitra, Data tidak dapat dihapus!");
+                    $("#delete_").find('#delData').attr('hidden',true);
                 }
             },
             error:function(response){
@@ -379,6 +393,38 @@ $(document).ready(function () {
 
 
 
+
+    });
+
+    $('.container').on('click', '#delData', function () {
+        var id_donasi = $('#delData').data('id_donasi');
+        var creator = $('#delData').data('id_creator');
+        $.ajax({
+            type: 'GET',
+            data : {
+                'id_donasi' : id_donasi,
+                'id_creator' : id_creator,
+            },
+            url: baseURL+'dashboard/deleteData',
+            success:function(response){
+                if(response == 0)
+                {
+                    $("#delete_").find('.del-word').text("Tidak dapat mengakses donasi milik orang lain!");
+                    $("#delete_").find('#delData').attr('hidden',true);
+                }else if(response == 1){
+                    $("#delete_").find('.del-word').text("Apakah Anda yakin akan menghapus data ini ?");
+                    $("#delete_").find('#delData').removeAttr('hidden');
+                    $("#delete_").find('#delData').attr('data-id_donasi',id_donasi);
+                    $("#delete_").find('#delData').attr('data-id_creator',id_creator);
+                }else if(response == 2){
+                    $("#delete_").find('.del-word').text("Sampah telah diambil oleh Mitra, Data tidak dapat dihapus!");
+                    $("#delete_").find('#delData').attr('hidden',true);
+                }
+            },
+            error:function(response){
+                alert(response);
+            }
+        });
 
     });
     
