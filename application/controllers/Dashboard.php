@@ -41,6 +41,11 @@ class Dashboard extends CI_Controller
         }
     }
 
+    public function txt()
+    {
+        echo hash('sha512','6237994025a8ded63dff7ede7b4fb438',false);
+    }
+     
     public function konfirmasi()
     {
         $this->form_validation->set_rules(
@@ -59,45 +64,68 @@ class Dashboard extends CI_Controller
                 'msg' => $rsp,
             );
             echo json_encode($output);
+            
         } else {
             $id_donasi = $this->input->post('id_donasi');
             $id_creator = $this->input->post('creator');
             $username_mitra = $this->input->post('username_mitra');
             $id_user = $this->session->user[0]['id_user'];
+            $hp_mitra = $this->input->post('hp_mitra');
 
-            if ($id_user != $id_creator) {
-                $output = array(
-                    'error' => false,
-                    'msg' => 'Tidak dapat merubah data milik user lain!',
-                );
-                echo json_encode($output);
-            } else {
-                $dataMitra = $this->DashboardModel->getMitraInfo($username_mitra);
-                if (isset($dataMitra)) {
-                    $id_mitra = $dataMitra[0]['id_mitra'];
-                    $dataDonasi = $this->DashboardModel->konfirmasi_donasi($id_donasi, $id_creator, $id_mitra);
-                    if ($dataDonasi) {
-                        $output = array(
-                            'error' => false,
-                            'msg' => 'Konfirmasi pengambilan donasi berhasil!',
-                            'stat' => $dataDonasi,
-                        );
-                        echo json_encode($output);
+            if($hp_mitra != null){
+                if ($id_user != $id_creator) {
+                    $output = array(
+                        'error' => true,
+                        'msg' => 'Tidak dapat merubah data milik user lain!',
+                    );
+                    echo json_encode($output);
+                } else {
+                    $dataMitra = $this->DashboardModel->getMitraInfo($username_mitra);
+                    if (isset($dataMitra)) {
+                        $id_mitra = $dataMitra[0]['id_mitra'];
+    
+                        $statDonasi = $this->DashboardModel->getData($id_donasi);
+                        if(is_null($statDonasi[0]->fkid_mitra)){
+                            $dataDonasi = $this->DashboardModel->konfirmasi_donasi($id_donasi, $id_creator, $id_mitra);
+                            if ($dataDonasi) {
+                                $output = array(
+                                    'error' => false,
+                                    'msg' => 'Konfirmasi pengambilan donasi berhasil!',
+                                    'stat' => $dataDonasi,
+                                );
+                                echo json_encode($output);
+                            } else {
+                                $output = array(
+                                    'error' => true,
+                                    'msg' => 'Konfirmasi pengambilan donasi gagal!',
+                                );
+                                echo json_encode($output);
+                            }
+                        }else{
+                            $output = array(
+                                'error' => true,
+                                'msg' => 'Konfirmasi pengambilan donasi gagal!',
+                            );
+                            echo json_encode($output);
+                        }   
+                        
                     } else {
                         $output = array(
-                            'error' => false,
-                            'msg' => 'Konfirmasi pengambilan donasi gagal!',
+                            'error' => true,
+                            'msg' => 'Username mitra tidak terdaftar!',
                         );
                         echo json_encode($output);
                     }
-                } else {
-                    $output = array(
-                        'error' => false,
-                        'msg' => 'Username mitra tidak terdaftar!',
-                    );
-                    echo json_encode($output);
                 }
+            }else{
+                $output = array(
+                    'error' => true,
+                    'msg' => 'Nomor telfon mitra tidak ada, tidak dapat melakukan donasi!',
+                );
+                echo json_encode($output);
             }
+
+            
         }
     }
 

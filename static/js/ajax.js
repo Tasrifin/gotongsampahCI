@@ -1,5 +1,11 @@
 $(document).ready(function () {
     //fetch data 
+    if(pagesType == 'dashboard'){
+        getData();
+    }else if(pagesType == 'history'){
+        getDataHistory();
+    }   
+    
     var data_detail = {
         title: $("#detail_modal").find('.modal-title').text(),
         jenis_donasi: $("#detail_modal").find('.jenis_donasi').text(),
@@ -31,7 +37,7 @@ $(document).ready(function () {
                 }
             },
             error: function (response) {
-                alert("Tidak dapat memuat data, Error :" + response);
+                alert("ERROR : Tidak dapat menerima data dari server!");
             }
         });
     });
@@ -53,7 +59,7 @@ $(document).ready(function () {
                 }
             },
             error: function (response) {
-                alert("Tidak dapat memuat data, Error :" + response);
+                alert("ERROR : Tidak dapat menerima data dari server!");
             }
         });
     });
@@ -79,18 +85,16 @@ $(document).ready(function () {
             success: function (data) {
                 if(data.length === 0){
                     $("#detail_modal").data('bs.modal',null);
-                    console.log('no data!');
+                    $("#detail_modal").modal('hide');
+                    alert('Data donasi tidak ditemukan!');
                 }else{
-                    console.log(data);
                     var dt = data[0];
                     var stat = UrlExists(baseURL + 'cdn/img/' + dt.gambar);
                     if (stat === false) {
                         dt.gambar = '404.jpeg';
                     }
-                    console.log(dt);
                     $("#detail_modal").find('.card-title').text(dt.Judul_Donasi);
                     $("#detail_modal").find('.gambar_donasi').attr('src', baseURL + 'cdn/img/' + dt.gambar);
-                    console.log($("#detail_modal").find('.gambar_donasi').attr('src'));
                     $("#detail_modal").find('.jenis_donasi').text(data_detail.jenis_donasi + dt.jenis_donasi);
                     $("#detail_modal").find('.jumlah_donasi').text(data_detail.jumlah_donasi + dt.jumlah_donasi + " KG");
                     $("#detail_modal").find('.informasi_donasi').text(data_detail.informasi_donasi + dt.informasi_donasi);
@@ -125,7 +129,7 @@ $(document).ready(function () {
 
             },
             error: function (data) {
-                console.log(data);
+                alert("ERROR : Tidak dapat menerima data dari server!");
             }
         });
     }
@@ -148,13 +152,17 @@ $(document).ready(function () {
                 $("#detail_modal").find('.alamat_donasi').text(data_detail.alamat_donasi + dt.alamat);
             },
             error: function (data) {
-                console.log(data);
+                alert("ERROR : Tidak dapat menerima data dari server!");
             }
         });
     }
     //DetailMDL::Hide
     $('#detail_modal').on('hidden.bs.modal', function () {
-        getData();
+        if(pagesType == 'dashboard'){
+            getData();
+        }else if(pagesType == 'history'){
+            getDataHistory();
+        }
     })
 
     //EditMDL
@@ -194,22 +202,26 @@ $(document).ready(function () {
             async: false,
             dataType: 'JSON',
             success: function (data) {
-                dt = data[0];
+                if(data.length){
+                    dt = data[0];
 
-                $("#edit_").find('#judul_donasi').val(dt.Judul_Donasi);
-                $("#edit_").find('#jenis_donasi').val(dt.jenis_donasi);
-                $("#edit_").find('#jumlah_donasi').val(dt.jumlah_donasi);
-                $("#edit_").find('#deskripsi_donasi').val(dt.informasi_donasi);
-                $("#edit_").find('#edit_batal').attr('data', id);
-                var gbr = baseURL + 'cdn/img/' + dt.gambar;
-                ShowImage_default(gbr);
-                $("#edit_").find('#id_donasi').val(id);
-                $("#edit_").find('#id_user').val(dt.fkid_user);
-                $("#edit_").find('#gbr').val(dt.gambar);
+                    $("#edit_").find('#judul_donasi').val(dt.Judul_Donasi);
+                    $("#edit_").find('#jenis_donasi').val(dt.jenis_donasi);
+                    $("#edit_").find('#jumlah_donasi').val(dt.jumlah_donasi);
+                    $("#edit_").find('#deskripsi_donasi').val(dt.informasi_donasi);
+                    $("#edit_").find('#edit_batal').attr('data', id);
+                    var gbr = baseURL + 'cdn/img/' + dt.gambar;
+                    ShowImage_default(gbr);
+                    $("#edit_").find('#id_donasi').val(id);
+                    $("#edit_").find('#id_user').val(dt.fkid_user);
+                    $("#edit_").find('#gbr').val(dt.gambar);
+                }else{
+                    alert("ERROR : Data tidak ditemukan!");
+                }
 
             },
             error: function (data) {
-                console.log(data);
+                alert("ERROR : Tidak dapat menerima data dari server!");
             }
         });
 
@@ -219,7 +231,6 @@ $(document).ready(function () {
     function ShowImage_default(input) {
         var html = '<img src="' + input + '" width="200" height="100" class="img-thumbnail m-3">';
         $('#no_update').html(html);
-        console.log(html);
     }
     //Edit::Batal
     $('.container').on('click', '#edit_batal', function () {
@@ -249,7 +260,7 @@ $(document).ready(function () {
                 }
             },
             error: function (response) {
-                alert("Tidak dapat memuat data, Error :" + response);
+                alert("ERROR : Tidak dapat menerima data dari server!");
             }
         });
 
@@ -267,7 +278,6 @@ $(document).ready(function () {
         $("#detail_modal").modal('hide');
         $("#konfirmasi_").modal('show');        
         $("#konfirmasi_").find('.modal-title').text(title_konfirmasi + id);
-
     });
     //Konfirmasi::GetMitraInfo
     $('#username_mitra').blur(function () {
@@ -285,7 +295,14 @@ $(document).ready(function () {
                 success: function (rsp) {
                     if (rsp['status']) {
                         $("#konfirmasi_").find('.mitra-unknown').attr('hidden', true);
-                        $("#konfirmasi_").find('.hp_mitra').val(rsp['response'][0].handphone);
+                        if(rsp['response'][0].handphone != null){
+                            $("#konfirmasi_").find('.hp_mitra').val(rsp['response'][0].handphone);
+                        }else{
+                            $("#konfirmasi_").find('.mitra-unknown').removeAttr('hidden');
+                            $("#konfirmasi_").find('.mitra-unknown').text('Nomor telfon mitra tidak ada, tidak dapat melakukan donasi!');
+                            $("#konfirmasi_").find('.hp_mitra').val(rsp['response'][0].handphone);
+                        }
+                        
 
                     } else {
                         $("#konfirmasi_").find('.mitra-unknown').removeAttr('hidden');
@@ -295,7 +312,7 @@ $(document).ready(function () {
                     }
                 },
                 error: function (rsp) {
-                    alert(rsp);
+                    alert("ERROR : Tidak dapat menerima data dari server!");
                 }
             })
         }
@@ -326,6 +343,7 @@ $(document).ready(function () {
                 'id_donasi' : id_donasi,
                 'creator'   : creator,
                 'username_mitra' : $('#username_mitra').val(),
+                'hp_mitra' : $('#hp_mitra').val(),
             },
             url: baseURL + "dashboard/konfirmasi",
             dataType : "json",
@@ -339,7 +357,7 @@ $(document).ready(function () {
                 }
             },
             error: function (response) {
-                alert("Tidak dapat memuat data, Error :" + response);
+                alert("ERROR : Tidak dapat menerima data dari server!");
             }
         });
     });
@@ -376,7 +394,7 @@ $(document).ready(function () {
                 }
             },
             error: function (response) {
-                alert(response);
+                alert("ERROR : Tidak dapat menerima data dari server!");
             }
         });
     });
@@ -405,17 +423,29 @@ $(document).ready(function () {
                 {
                     alert("Tidak dapat menghapus milik orang lain!");
                     $("#delete_").modal('hide');
-                    getDataDetail(id_donasi);
                 }else if(response['stat'] == 1){
                     alert(response['msg'])
-                    $("#delete_").modal('hide');
+                    $('#delete_').off('hidden.bs.modal');
+                    $('#delete_').modal('hide');
+                    setTimeout(function(){
+                        $('#delete_').on('hidden.bs.modal', function () {
+                            var id = $('#delData').data('id_donasi');
+                            $("#detail_modal").modal('show');
+                            getDataDetail(id);
+                        })  
+                    },1000);
+                    if(pagesType == 'dashboard'){
+                        getData();
+                    }else if(pagesType == 'history'){
+                        getDataHistory();
+                    }
                 }else if(response['stat'] == 2){
                     alert("Gagal menghapus donasi karena donasi telah diambil mitra!");
                     $("#delete_").modal('hide');
                 }
             },
             error:function(response){
-                alert(response);
+                alert("ERROR : Tidak dapat menerima data dari server!");
             }
         });
 
@@ -490,7 +520,6 @@ function getData() {
                 if (stat === false) {
                     dt.gambar = '404.jpeg';
                 }
-                console.log(dt.gambar);
                 judul = text_truncate(dt.Judul_Donasi, 23, '...');
                 desc = text_truncate(dt.informasi_donasi, 100, '...');
                 html += '<div class="col-md-4">' +
@@ -507,6 +536,48 @@ function getData() {
                     '</div>';
             }
             $('#place_data').html(html);
+        },error: function(data){
+            alert("ERROR : Tidak dapat menerima data dari server!");
+        }
+    });
+
+}
+
+//HistoryGetData
+function getDataHistory() {
+    $.ajax({
+        type: 'GET',
+        url: baseURL + 'profile/getDataHistory',
+        async: false,
+        dataType: 'JSON',
+        success: function (data) {
+            var html = '';
+            var judul = '';
+            var desc = '';
+            for (var i = 0; i < data.length; i++) {
+                var dt = data[i];
+                var stat = UrlExists(baseURL + 'cdn/img/' + dt.gambar);
+                if (stat === false) {
+                    dt.gambar = '404.jpeg';
+                }
+                judul = text_truncate(dt.Judul_Donasi, 23, '...');
+                desc = text_truncate(dt.informasi_donasi, 100, '...');
+                html += '<div class="col-md-4">' +
+                    '<div class="card " style="margin-bottom: 10%; ">' +
+                    '<div class="wrapper">' +
+                    '<img class="card-img-top img-fluid" src="' + baseURL + 'cdn/img/' + dt.gambar + '" alt="Card image cap">' +
+                    '</div>' +
+                    '<div title="' + dt.Judul_Donasi + '"><h4 class="card-title" style="text-align:center; margin-top:15px; margin-bottom:-10px;">' + judul + '</h4></div>' +
+                    '<div class="card-body">' +
+                    '<div title="click detail for more info"><p class="card-text" style="text-align:justify; margin-bottom:10px;">' + desc + '</p></div>' +
+                    '<button class="btn btn-theme-yellow btn-block donasi_detail" data="' + dt.id_donasi + '">Detail</button>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>';
+            }
+            $('#place_data_history').html(html);
+        },error:function(data){
+            alert("ERROR : Tidak dapat menerima data dari server!");
         }
     });
 

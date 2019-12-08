@@ -2,62 +2,20 @@
     var baseURL = "<?= base_url() ?>";
     var type = '<?php echo $type ?>';
     var my_id = '<?php echo $session_data[0]["id_" . $type] ?>';
-    var pagesType = 'dashboard';
+    var pagesType = 'history';
 </script>
 <script type="text/javascript" src="<?php echo base_url() ?>static/js/ajax.js"></script>
-
 <main>
     <!-- Selamat Datang -->
     <section class="section" id="about">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-md-10">
-                    <div class="section-title text-center">
-                        <?php
-                        //if for user or mitra
-                        if ($type == 'user') {
-                            ?>
-                            <h6 class="theme-color">SELAMAT DATANG !</h6>
-                            <h2 class="theme-after">Siap Mendonasikan Sampahmu ?</h2>
-                            <p>Hay #EnvirontmentHeroes !</p>
-                        <?php
-                        } else {
-                            ?>
-                            <h6 class="theme-color">SELAMAT DATANG !</h6>
-                            <h2 class="theme-after">Mitra GotongSampah.ID</h2>
-                            <p>Proses Donasi Yang Tersedia, dan Hubungi Para Giver!</p>
-                        <?php
-                        }
-                        ?>
-                    </div>
-                </div>
-            </div>
+      <div class="container">
+        <div class="row justify-content-center">
+            <div class="section-title text-center">
+             <h6 class="theme-color">SELAMAT DATANG<br> <?php echo (is_null($session_data[0]['nama']))? $session_data[0]['username']: $session_data[0]['nama'] ?> !</h6>
+              <h2 class="theme-after">Riwayat <?php echo ($type=="user")? "Berdonasi" : "Bermitra" ?> Kamu</p>
+          </div>
         </div>
-    </section>
-    <section id="urai" class="section gray-bg">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-md-6">
-                    <div class="side-title">
-                        <h6 class="theme-color">GotongSampah.ID</h6>
-                        <h2>Website Donasi Sampah #1 di Indonesia</h2>
-                        <p></p>
-                        <div class="m-30px-t">
-                            <?php
-                            //if for user or mitra
-                            if ($type == 'user') {
-                                ?>
-                                <a class="btn btn-theme" href="input_donasi.php">DONASI SEKARANG</a>
-                            <?php
-                            } else {
-                                //nothing to show
-                            }
-                            ?>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+      </div>
     </section>
     <!-- Donasi -->
     <section class="section">
@@ -234,7 +192,7 @@
             </div>
 
 
-            <div id="place_data" class="row">
+            <div id="place_data_history" class="row">
                 <!--
                 DATA FROM AJAX WILL BE PRESENTED IN THIS DIV
             -->

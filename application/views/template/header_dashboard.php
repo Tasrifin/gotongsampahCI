@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <title>Gotong Sampah</title>
+    <title><?= $title?> </title>
     <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
 
     <link href="<?php echo base_url() ?>static/plugin/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -26,14 +26,7 @@
     </style>
     <script>
         var baseURL = "<?= base_url() ?>";
-        var type = '<?php echo $type ?>';
-        var my_id = '<?php echo $session_data[0]["id_" . $type] ?>';
-    </script>
-    <script type="text/javascript" src="<?php echo base_url() ?>static/js/ajax.js"></script>
-    <script>
-        var baseURL = "<?= base_url() ?>";
         $(document).ready(function() {
-            console.log("ready!");
             $(window).scroll(function() {
                 var y = $(window).scrollTop();
                 if (y > 0) {
@@ -42,7 +35,6 @@
                     $("#head_navbar").removeClass('shadow-lg');
                 }
             });
-            getData();
         });
     </script>
 
@@ -88,9 +80,9 @@
 
                                     ?>
 
-                                    <a href="history.php" class="dropdown-item"><i class="ti-wallet"></i> Riwayat <?php echo ($type == "user") ? "Donasi" : "Bermitra" ?></a>
+                                    <a href="<?php echo base_url() ?>profile/history" class="dropdown-item"><i class="ti-wallet"></i> Riwayat <?php echo ($type == "user") ? "Donasi" : "Bermitra" ?></a>
                                     <div class="dropdown-divider"></div>
-                                    <a href="profile.php" class="dropdown-item">
+                                    <a href="<?php echo base_url() ?>profile/settings" class="dropdown-item">
                                         <i class="ti-settings"></i> Pengaturan Akun
                                     </a>
                                     <div class="dropdown-divider"></div>
