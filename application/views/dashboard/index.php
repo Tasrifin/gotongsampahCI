@@ -163,6 +163,7 @@
                                     <div class="input-group mb-3">
                                         <input type="number" class="form-control" placeholder="id donasi" id="id_donasi" name="id_donasi" value="" required hidden>
                                         <input type="number" class="form-control" placeholder="id donasi" id="id_user" name="id_user" value="" required hidden>
+                                        <input type="text" class="form-control" placeholder="id donasi" id="gbr" name="gbr" value="" required hidden>
                                     </div>
                                 </div>
                                 <div>
@@ -200,7 +201,7 @@
                                 <div class="form-group">
                                     <label for="update_foto">Update Foto Sampah?</label>
                                     <select name="update_foto" id="update_foto" class="custom-select" required>
-                                        <option value="N" selected>Tidak, tetap gunakan file lama.</option>
+                                        <option value="N">Tidak, tetap gunakan file lama.</option>
                                         <option value="Y">Iya, perbaharui foto</option>
                                     </select>
                                 </div>

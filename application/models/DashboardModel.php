@@ -39,14 +39,24 @@ class DashboardModel extends CI_Model
 
     public function updateDonasi($id_donasi,$fkid_user,$judul,$jenis,$jumlah,$desc,$keypicker)
     {
-        $data = array(
-            'fkid_user' => $fkid_user,
-            'Judul_Donasi' => $judul,
-            'jenis_donasi' => $jenis,
-            'jumlah_donasi' => $jumlah,
-            'informasi_donasi' => $desc,
-            'keypicker' => $keypicker,
-        );
+        if($keypicker == null){
+            $data = array(
+                'fkid_user' => $fkid_user,
+                'Judul_Donasi' => $judul,
+                'jenis_donasi' => $jenis,
+                'jumlah_donasi' => $jumlah,
+                'informasi_donasi' => $desc,
+            );
+        }else{
+            $data = array(
+                'fkid_user' => $fkid_user,
+                'Judul_Donasi' => $judul,
+                'jenis_donasi' => $jenis,
+                'jumlah_donasi' => $jumlah,
+                'informasi_donasi' => $desc,
+                'keypicker' => $keypicker,
+            );
+        }
         $this->db->where('id_donasi',$id_donasi);
         $query = $this->db->update('donasi',$data);
         return $this->db->affected_rows();
@@ -78,5 +88,11 @@ class DashboardModel extends CI_Model
         $this->db->from('donasi');
         $data = $this->db->get();
         return $data->result_array();
+    }
+
+    public function deleteData($id_donasi){
+        $this->db->where('id_donasi',$id_donasi);
+        $data = $this->db->delete('donasi');
+        return $this->db->affected_rows();
     }
 }
