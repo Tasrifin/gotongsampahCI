@@ -7,10 +7,8 @@
             <h4 class="font-alt">Tentang Kami</h4>
             <p class="footer-text">GotongSampah.ID adalah platform peduli lingkungan yang menghubungkan mereka yang memiliki sampah non-organik dengan mitra GotongSampah.ID</p>
             <ul class="social-icons">
-              <li><a class="facebook" href="#"><i class="fab fa-facebook-f"></i></a></li>
-              <li><a class="twitter" href="#"><i class="fab fa-twitter"></i></a></li>
-              <li><a class="google" href="#"><i class="fab fa-google-plus-g"></i></a></li>
-              <li><a class="linkedin" href="#"><i class="fab fa-linkedin-in"></i></a></li>
+              <li><a class="facebook" href="https://facebook.com/bloggeran"><i class="fab fa-facebook-f"></i></a></li>
+              <li><a class="linkedin" href="https://linkedin.com/in/haykaal"><i class="fab fa-linkedin-in"></i></a></li>
             </ul>
           </div> 
 

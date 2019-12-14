@@ -16,4 +16,24 @@ class ProfileModel extends CI_Model
         $data = $this->db->get();
         return $data->result();
     }
+
+    public function getSettingsInfo($id_user,$type)
+    {
+        $this->db->select('username,email,alamat,tanggallahir,handphone,jeniskelamin,nama');
+        $this->db->from($type);
+        $this->db->where('id_'.$type, $id_user);
+        $data = $this->db->get()->result();
+        return $data;
+    }
+
+    public function getUsrInf($id_user,$type){
+        $this->db->select('password');
+        $this->db->from($type);
+        $this->db->where('id_'.$type, $id_user);
+        $data = $this->db->get()->result();
+        return $data;
+
+    }
+
+
 }

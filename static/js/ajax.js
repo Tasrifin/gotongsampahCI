@@ -4,6 +4,8 @@ $(document).ready(function () {
         getData();
     }else if(pagesType == 'history'){
         getDataHistory();
+    } else if(pagesType == 'settings'){
+        getSettingsInfo();
     }   
     
     var data_detail = {
@@ -451,7 +453,24 @@ $(document).ready(function () {
 
     });
 
-    
+    $("#updateSettings").submit(function(e) {   
+        e.preventDefault();
+        $.ajax({
+            type: 'POST',
+            data: $('#updateSettings').serialize(),
+            url : baseURL+'Profile/tryUpdateUser',
+            dataType : 'JSON',
+            success:function(response){
+                if(response['error']){
+                    alert(response['msg']);
+                }else{
+                    
+                }
+            },error:function(response){
+                alert("ERROR : Tidak dapat menerima data dari server!");
+            }
+        });
+    });
 
 
 });
@@ -582,3 +601,32 @@ function getDataHistory() {
     });
 
 }
+
+function getSettingsInfo()
+{
+    $.ajax({
+        type : 'GET',
+        url : baseURL+'profile/getSettingsInfo',
+        dataType:'json',
+        success: function(data){
+            if(data.length)
+            {
+                $('#username').val(data[0].username);
+                $('#name').val(data[0].nama);
+                $('#email').val(data[0].email);
+                $('#Alamat').val(data[0].alamat);
+                $('#tanggallahir').val(data[0].tanggallahir);
+                $('#handphone').val(data[0].handphone);
+                $('#jenisKelamin').val(data[0].jeniskelamin)
+            }
+            else
+            {
+                alert('Data user tidak ditemukan!');
+            }
+
+        },error:function(data){
+            alert("ERROR : Tidak dapat menerima data dari server!");
+        }
+    });
+}
+

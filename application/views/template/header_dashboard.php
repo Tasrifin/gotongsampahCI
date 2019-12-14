@@ -45,8 +45,8 @@
         <nav id="head_navbar" class="navbar header-nav navbar-expand-lg bg-white navbar-white sticky-top ">
             <div class="container container-large">
                 <a class="navbar-brand" href="#">
-                    <img class="light-logo" src="<?php echo base_url() ?>static/img/logo.svg" title="" alt="" onclick="location.href='explore.php'">
-                    <img class="dark-logo" src="<?php echo base_url() ?>static/img/logo.svg" title="" alt="" onclick="location.href='explore.php'">
+                    <img class="light-logo" src="<?php echo base_url() ?>static/img/logo.svg" title="" alt="" onclick="location.href='<?= base_url()?>dashboard/'">
+                    <img class="dark-logo" src="<?php echo base_url() ?>static/img/logo.svg" title="" alt="" onclick="location.href='<?= base_url()?>dashboard/'">
                 </a>
                 <button class="navbar-toggler " type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
                     <span></span>
@@ -56,12 +56,12 @@
 
                 <div class="collapse navbar-collapse justify-content-end" id="navbar">
                     <ul class="navbar-nav align-items-center">
-                        <li><a class="nav-link" href="#">Home</a></li>
+                        <li><a class="btn btn-theme-yellow" href="<?= base_url()?>dashboard/">Home</a></li>
                         <?php
                         //if for user or mitra
                         if ($type == 'user') {
                             ?>
-                            <li><a class="btn btn-theme-yellow" href="input_donasi.php">DONASI SEKARANG</a></li>
+                            <li><a class="btn btn-theme-yellow btn_Donasi" href="input_donasi.php">DONASI SEKARANG</a></li>
                         <?php
                         } else {
                             //nothing to show
