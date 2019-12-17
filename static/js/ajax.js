@@ -100,33 +100,9 @@ $(document).ready(function () {
                     $("#detail_modal").find('.jenis_donasi').text(data_detail.jenis_donasi + dt.jenis_donasi);
                     $("#detail_modal").find('.jumlah_donasi').text(data_detail.jumlah_donasi + dt.jumlah_donasi + " KG");
                     $("#detail_modal").find('.informasi_donasi').text(data_detail.informasi_donasi + dt.informasi_donasi);
-                    getData_UserInfo(dt.fkid_user, "user");
+                    getData_UserInfo(dt.fkid_user, "user",my_id,dt);
 
-                    var html = '';
-                    //footer
-                    if (my_id == dt.fkid_user && dt.fkid_mitra === null && type == "user") {
-                        html = '<button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>' +
-                            '<button type="button" class="btn btn-theme-yellow modal_edit" data=' + id + ' ><i class="ti-pencil-alt"></i></button>' +
-                            '<button type="button" class="btn btn-danger modal_delete" data-id_donasi=' + id + ' data-id_creator=' + dt.fkid_user + ' d><i class="ti-trash"></i></button>' +
-                            '<button type="button" class="btn btn-success modal_konfirmasi" data-id_donasi=' + id + ' data-id_creator=' + dt.fkid_user + '>Konfirmasi</button>';
-                    } else if (my_id == dt.fkid_user && dt.fkid_mitra !== null && type == "user") {
-                        html = '<button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>' +
-                            '<button type="button" class="btn btn-theme-yellow" data-toggle="modal" data-target="" data-dismiss="modal" disabled><i class="ti-pencil-alt"></i></button>' +
-                            '<button type="button" class="btn btn-danger" data-toggle="modal" data-target="" data-dismiss="modal" disabled><i class="ti-trash"></i></button>' +
-                            '<button type="button" class="btn btn-success" data-toggle="modal" data-target="" data-dismiss="modal" disabled>Telah Diambil</button>';
-                    } else if (dt.fkid_mitra === null && type == "mitra") {
-                        html = '<button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>' +
-                            '<a class="btn btn-success" data-dismiss="" href=""><i class="fas fa-phone"> Telepon</i></a>' +
-                            '<a class="btn btn-success" data-dismiss="" href=""><i class="fas fa-envelope-square"> Email</i></a>';
-                    } else if (dt.fkid_mitra !== null && type == "mitra") {
-                        html = '<button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>' +
-                            '<a class="btn btn-danger" style="color:white" data-dismiss="modal">Donasi telah diambil</a>';
-                    } else if (my_id !== dt.fkid_user) {
-                        html = '<button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>';
-                    } else {
-                        html = '<button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>';
-                    }
-                    $('#main_modal_footer').html(html);
+                    
                 }
 
             },
@@ -136,7 +112,7 @@ $(document).ready(function () {
         });
     }
     //Detail::GetDataUserInfo
-    function getData_UserInfo(id, type_) {
+    function getData_UserInfo(id, type_,my_id,dt) {
         $.ajax({
             type: 'AJAX',
             method: 'POST',
@@ -148,10 +124,36 @@ $(document).ready(function () {
             async: false,
             dataType: 'JSON',
             success: function (data) {
-                var dt = data[0];
-                $("#detail_modal").find('.donatur_donasi').text(data_detail.donatur_donasi + dt.nama);
-                $("#detail_modal").find('.kontak_donasi').text(data_detail.kontak_donasi + dt.handphone);
-                $("#detail_modal").find('.alamat_donasi').text(data_detail.alamat_donasi + dt.alamat);
+                var dtinf = data[0];
+                $("#detail_modal").find('.donatur_donasi').text(data_detail.donatur_donasi + dtinf.nama);
+                $("#detail_modal").find('.kontak_donasi').text(data_detail.kontak_donasi + dtinf.handphone);
+                $("#detail_modal").find('.alamat_donasi').text(data_detail.alamat_donasi + dtinf.alamat);
+
+                var html = '';
+                //footer
+                if (my_id == dt.fkid_user && dt.fkid_mitra === null && type == "user") {
+                    html = '<button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>' +
+                        '<button type="button" class="btn btn-theme-yellow modal_edit" data=' + id + ' ><i class="ti-pencil-alt"></i></button>' +
+                        '<button type="button" class="btn btn-danger modal_delete" data-id_donasi=' + id + ' data-id_creator=' + dt.fkid_user + ' d><i class="ti-trash"></i></button>' +
+                        '<button type="button" class="btn btn-success modal_konfirmasi" data-id_donasi=' + id + ' data-id_creator=' + dt.fkid_user + '>Konfirmasi</button>';
+                } else if (my_id == dt.fkid_user && dt.fkid_mitra !== null && type == "user") {
+                    html = '<button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>' +
+                        '<button type="button" class="btn btn-theme-yellow" data-toggle="modal" data-target="" data-dismiss="modal" disabled><i class="ti-pencil-alt"></i></button>' +
+                        '<button type="button" class="btn btn-danger" data-toggle="modal" data-target="" data-dismiss="modal" disabled><i class="ti-trash"></i></button>' +
+                        '<button type="button" class="btn btn-success" data-toggle="modal" data-target="" data-dismiss="modal" disabled>Telah Diambil</button>';
+                } else if (dt.fkid_mitra === null && type == "mitra") {
+                    html = '<button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>' +
+                        '<a class="btn btn-success" href="tel:'+dtinf.handphone+'"><i class="fas fa-phone"> Telepon</i></a>' +
+                        '<a class="btn btn-success" href="mailto:' + dtinf.email + '"><i class="fas fa-envelope-square"> Email</i></a>';
+                } else if (dt.fkid_mitra !== null && type == "mitra") {
+                    html = '<button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>' +
+                        '<a class="btn btn-danger" style="color:white" data-dismiss="modal">Donasi telah diambil</a>';
+                } else if (my_id !== dt.fkid_user) {
+                    html = '<button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>';
+                } else {
+                    html = '<button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>';
+                }
+                $('#main_modal_footer').html(html);              
             },
             error: function (data) {
                 alert("ERROR : Tidak dapat menerima data dari server!");
@@ -464,7 +466,36 @@ $(document).ready(function () {
                 if(response['error']){
                     alert(response['msg']);
                 }else{
-                    
+                    alert(response['msg'])
+                    getSettingsInfo();
+                }
+            },error:function(response){
+                alert("ERROR : Tidak dapat menerima data dari server!");
+            }
+        });
+    });
+
+    $('.container').on('click', '.donasi-sekarang', function () {
+        $('#add_modal').modal('show');
+        $.ajax({
+            type: 'POST',
+            data: {
+                'id': my_id,
+                'type': type,
+            },
+            url: baseURL + 'dashboard/getData_UserInfo',
+            dataType : 'JSON',
+            success: function (response) {
+                var rsp = response[0];
+                if(rsp.activationCode == null)
+                {
+                    if(rsp.nama != null && rsp.alamat != null && rsp.handphone != null && rsp.email != null && tanggallahir != null && jeniskelamin != null){
+                        //go
+                    }else{
+                        alert("Harap penuhi data pada profile anda terlebih dahulu!")
+                    }
+                }else{
+                    alert("blm aktif");
                 }
             },error:function(response){
                 alert("ERROR : Tidak dapat menerima data dari server!");
@@ -533,28 +564,33 @@ function getData() {
             var html = '';
             var judul = '';
             var desc = '';
-            for (var i = 0; i < data.length; i++) {
-                var dt = data[i];
-                var stat = UrlExists(baseURL + 'cdn/img/' + dt.gambar);
-                if (stat === false) {
-                    dt.gambar = '404.jpeg';
+            if(data.length >= 1){
+                for (var i = 0; i < data.length; i++) {
+                    var dt = data[i];
+                    var stat = UrlExists(baseURL + 'cdn/img/' + dt.gambar);
+                    if (stat === false) {
+                        dt.gambar = '404.jpeg';
+                    }
+                    judul = text_truncate(dt.Judul_Donasi, 23, '...');
+                    desc = text_truncate(dt.informasi_donasi, 100, '...');
+                    html += '<div class="col-md-4">' +
+                        '<div class="card " style="margin-bottom: 10%; ">' +
+                        '<div class="wrapper">' +
+                        '<img class="card-img-top img-fluid" src="' + baseURL + 'cdn/img/' + dt.gambar + '" alt="Card image cap">' +
+                        '</div>' +
+                        '<div title="' + dt.Judul_Donasi + '"><h4 class="card-title" style="text-align:center; margin-top:15px; margin-bottom:-10px;">' + judul + '</h4></div>' +
+                        '<div class="card-body">' +
+                        '<div title="click detail for more info"><p class="card-text" style="text-align:justify; margin-bottom:10px;">' + desc + '</p></div>' +
+                        '<button class="btn btn-theme-yellow btn-block donasi_detail" data="' + dt.id_donasi + '">Detail</button>' +
+                        '</div>' +
+                        '</div>' +
+                        '</div>';
                 }
-                judul = text_truncate(dt.Judul_Donasi, 23, '...');
-                desc = text_truncate(dt.informasi_donasi, 100, '...');
-                html += '<div class="col-md-4">' +
-                    '<div class="card " style="margin-bottom: 10%; ">' +
-                    '<div class="wrapper">' +
-                    '<img class="card-img-top img-fluid" src="' + baseURL + 'cdn/img/' + dt.gambar + '" alt="Card image cap">' +
-                    '</div>' +
-                    '<div title="' + dt.Judul_Donasi + '"><h4 class="card-title" style="text-align:center; margin-top:15px; margin-bottom:-10px;">' + judul + '</h4></div>' +
-                    '<div class="card-body">' +
-                    '<div title="click detail for more info"><p class="card-text" style="text-align:justify; margin-bottom:10px;">' + desc + '</p></div>' +
-                    '<button class="btn btn-theme-yellow btn-block donasi_detail" data="' + dt.id_donasi + '">Detail</button>' +
-                    '</div>' +
-                    '</div>' +
-                    '</div>';
+                $('#place_data').html(html);
+            }else{
+                html = '<h4>Tidak ada riwayat ber'+type+' milik kamu.</h4>';
+                $('#donasiState').html(html);
             }
-            $('#place_data').html(html);
         },error: function(data){
             alert("ERROR : Tidak dapat menerima data dari server!");
         }
@@ -573,32 +609,40 @@ function getDataHistory() {
             var html = '';
             var judul = '';
             var desc = '';
-            for (var i = 0; i < data.length; i++) {
-                var dt = data[i];
-                var stat = UrlExists(baseURL + 'cdn/img/' + dt.gambar);
-                if (stat === false) {
-                    dt.gambar = '404.jpeg';
+            if(data.length >= 1){
+                for (var i = 0; i < data.length; i++) {
+                    var dt = data[i];
+                    var stat = UrlExists(baseURL + 'cdn/img/' + dt.gambar);
+                    if (stat === false) {
+                        dt.gambar = '404.jpeg';
+                    }
+                    judul = text_truncate(dt.Judul_Donasi, 23, '...');
+                    desc = text_truncate(dt.informasi_donasi, 100, '...');
+                    html += '<div class="col-md-4">' +
+                        '<div class="card " style="margin-bottom: 10%; ">' +
+                        '<div class="wrapper">' +
+                        '<img class="card-img-top img-fluid" src="' + baseURL + 'cdn/img/' + dt.gambar + '" alt="Card image cap">' +
+                        '</div>' +
+                        '<div title="' + dt.Judul_Donasi + '"><h4 class="card-title" style="text-align:center; margin-top:15px; margin-bottom:-10px;">' + judul + '</h4></div>' +
+                        '<div class="card-body">' +
+                        '<div title="click detail for more info"><p class="card-text" style="text-align:justify; margin-bottom:10px;">' + desc + '</p></div>' +
+                        '<button class="btn btn-theme-yellow btn-block donasi_detail" data="' + dt.id_donasi + '">Detail</button>' +
+                        '</div>' +
+                        '</div>' +
+                        '</div>';
                 }
-                judul = text_truncate(dt.Judul_Donasi, 23, '...');
-                desc = text_truncate(dt.informasi_donasi, 100, '...');
-                html += '<div class="col-md-4">' +
-                    '<div class="card " style="margin-bottom: 10%; ">' +
-                    '<div class="wrapper">' +
-                    '<img class="card-img-top img-fluid" src="' + baseURL + 'cdn/img/' + dt.gambar + '" alt="Card image cap">' +
-                    '</div>' +
-                    '<div title="' + dt.Judul_Donasi + '"><h4 class="card-title" style="text-align:center; margin-top:15px; margin-bottom:-10px;">' + judul + '</h4></div>' +
-                    '<div class="card-body">' +
-                    '<div title="click detail for more info"><p class="card-text" style="text-align:justify; margin-bottom:10px;">' + desc + '</p></div>' +
-                    '<button class="btn btn-theme-yellow btn-block donasi_detail" data="' + dt.id_donasi + '">Detail</button>' +
-                    '</div>' +
-                    '</div>' +
-                    '</div>';
+                $('#place_data_history').html(html);
+            }else{
+                html = '<h4>Tidak ada riwayat ber'+type+' milik kamu.</h4>';
+                $('#donasiState').html(html);
             }
-            $('#place_data_history').html(html);
+            
         },error:function(data){
             alert("ERROR : Tidak dapat menerima data dari server!");
         }
     });
+
+    
 
 }
 

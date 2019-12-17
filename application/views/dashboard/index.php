@@ -47,7 +47,7 @@
                             //if for user or mitra
                             if ($type == 'user') {
                                 ?>
-                                <a class="btn btn-theme" href="input_donasi.php">DONASI SEKARANG</a>
+                                <a class="btn btn-theme donasi-sekarang" style="color:white">DONASI SEKARANG</a>
                             <?php
                             } else {
                                 //nothing to show
@@ -61,6 +61,11 @@
     </section>
     <!-- Donasi -->
     <section class="section">
+        <div class="row justify-content-center">
+            <div id="donasiState" class="section-title text-center">
+
+            </div>
+        </div>
         <div class="container">
             <!-- Modal -->
             <div id="detail_modal" class="modal fade detail_modal" tabindex="-1" role="dialog">';
@@ -228,6 +233,68 @@
                         <div class="modal-footer">
                             <button type="button" class="btn btn-danger" id="edit_batal">BATAL</button>
                             <button type="button" class="btn btn-success" id="edit_submit">SIMPAN</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Edit -->
+            <div class="modal fade" id="add_modal" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="add">Tambah Donasi Baru</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                        <form id="edit_form" enctype="multipart/form-data">
+                                <div>
+                                    <label id="" for="judul_donasi">Judul Donasi</label>
+                                    <div class="input-group mb-3">
+                                        <input type="text" class="form-control" placeholder="Judul donasi" id="judul_donasi" name="judul_donasi" value="" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="jenis_sampah">Jenis Sampah</label>
+                                    <select name="jenis_donasi" id="jenis_donasi" class="custom-select" required>
+                                        <option value="" selected disabled>Pilih</option>
+                                        <option value="Plastik">Plastik</option>
+                                        <option value="Kertas">Kertas</option>
+                                        <option value="Botol">Botol</option>
+                                        <option value="Kaca">Kaca</option>
+                                        <option value="Besi">Besi</option>
+                                    </select>
+                                </div>
+
+                                <div>
+                                    <label for="berat_sampah">Total Berat Sampah</label>
+                                    <div class="input-group mb-3">
+                                        <input type="number" class="form-control" placeholder="Berat Sampah" id="jumlah_donasi" name="jumlah_donasi" value="" required>
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">Kg.</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="deskripsi">Deskripsi</label>
+                                    <textarea name="deskripsi_donasi" id="deskripsi_donasi" class="form-control" rows="2" placeholder="Tuliskan deskripsi seperti : Kondisi sampah & informasi lainya " required></textarea>
+                                </div>
+                                <div id="pilih_gambar" class="form-group">
+                                    <label for="up_foto" class="text-black">Upload Foto Sampahmu :</label>
+                                    <div class="custom-file">
+                                        <input type="file" name="input_foto" class="custom-file-input" id="input_foto" onchange="ShowImage(this)">
+                                        <label class="custom-file-label" for="customFile">Pilih file</label>
+                                    </div>
+                                    <div id="img"></div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" id="add_batal">BATAL</button>
+                            <button type="button" class="btn btn-success" id="add_submit">SIMPAN</button>
                         </div>
                     </div>
                 </div>

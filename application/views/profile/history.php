@@ -8,17 +8,22 @@
 <main>
     <!-- Selamat Datang -->
     <section class="section" id="about">
-      <div class="container">
-        <div class="row justify-content-center">
-            <div class="section-title text-center">
-             <h6 class="theme-color">SELAMAT DATANG<br> <?php echo (is_null($session_data[0]['nama']))? $session_data[0]['username']: $session_data[0]['nama'] ?> !</h6>
-              <h2 class="theme-after">Riwayat <?php echo ($type=="user")? "Berdonasi" : "Bermitra" ?> Kamu</p>
-          </div>
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="section-title text-center">
+                    <h6 class="theme-color">SELAMAT DATANG<br> <?php echo (is_null($session_data[0]['nama'])) ? $session_data[0]['username'] : $session_data[0]['nama'] ?> !</h6>
+                    <h2 class="theme-after">Riwayat <?php echo ($type == "user") ? "Berdonasi" : "Bermitra" ?> Kamu</h2>
+                </div>
+            </div>
         </div>
-      </div>
     </section>
     <!-- Donasi -->
     <section class="section">
+        <div class="row justify-content-center">
+            <div id="donasiState" class="section-title text-center">
+                
+            </div>
+        </div>
         <div class="container">
             <!-- Modal -->
             <div id="detail_modal" class="modal fade detail_modal" tabindex="-1" role="dialog">';

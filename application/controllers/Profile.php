@@ -59,24 +59,47 @@ class Profile extends CI_Controller
                     echo json_encode($data);
                 } else {
                     $username = $this->input->post('username');
-                    $nama = $this->input->post('nama');
+                    $nama = $this->input->post('name');
                     $email = $this->input->post('email');
-                    $alamat = $this->input->post('Alamat');
+                    $alamat = $this->input->post('Alamat').' ';
                     $tglLahir = $this->input->post('tanggallahir');
                     $hp = $this->input->post('handphone');
                     $jk = $this->input->post('jenisKelamin');
                     $oldpassword = $this->input->post('inputPassword');
                     $password = $this->input->post('inputnewPassword');
+                    
 
                     //perform check old password!
                     $id_user = $this->session->user[0]['id_' . $type];
                     $data = $this->ProfileModel->getUsrInf($id_user, $type);
                     if($data[0]->password == md5($oldpassword)){
-                        $data = array(
-                            'error'	=> true,
-                            'msg'	=> 'ntap',
-                        );
-                        echo json_encode($data);
+
+                        //execute update data
+                        $password = md5($password);
+                        $response = $this->ProfileModel->updateUsrInfo($id_user,$nama, $email, $alamat, $tglLahir, $hp, $jk, $password,$type);
+                        if($response){
+                            if($email == $data[0]->email){
+                                $data = array(
+                                    'error'	=> false,
+                                    'msg'	=> 'Berhasil melakukan perubahan data!',
+                                );
+                                echo json_encode($data);
+                            }else{
+                                $data = array(
+                                    'error'	=> false,
+                                    'msg'	=> 'Berhasil melakukan perubahan data! Silahkan aktivasi ulang email baru anda!',
+                                );
+                                echo json_encode($data);
+                            }
+                            //add session info
+                            
+                        }else{
+                            $data = array(
+                                'error'	=> true,
+                                'msg'	=> 'Gagal melakukan perubahan data!',
+                            );
+                            echo json_encode($data);
+                        }
                     }else{
                         $data = array(
                             'error'	=> true,

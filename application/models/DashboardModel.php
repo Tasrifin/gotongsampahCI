@@ -26,7 +26,7 @@ class DashboardModel extends CI_Model
 
     public function getData_UserInfo($id,$table_)
     {
-        $this->db->select('nama,alamat,handphone');
+        $this->db->select('nama,alamat,handphone,email,tanggallahir,jeniskelamin,activationCode');
         $this->db->from($table_);
         if($table_ == "user"){
             $this->db->where('id_user', $id);
@@ -58,7 +58,7 @@ class DashboardModel extends CI_Model
             );
         }
         $this->db->where('id_donasi',$id_donasi);
-        $query = $this->db->update('donasi',$data);
+        $this->db->update('donasi',$data);
         return $this->db->affected_rows();
     }
 

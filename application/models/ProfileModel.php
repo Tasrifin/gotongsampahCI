@@ -27,12 +27,27 @@ class ProfileModel extends CI_Model
     }
 
     public function getUsrInf($id_user,$type){
-        $this->db->select('password');
+        $this->db->select('password,email');
         $this->db->from($type);
         $this->db->where('id_'.$type, $id_user);
         $data = $this->db->get()->result();
         return $data;
 
+    }
+
+    public function updateUsrInfo($id_user,$nama, $email, $alamat, $tglLahir, $hp, $jk, $password, $type){
+        $data = array(
+            'email' => $email,
+            'nama' => $nama,
+            'handphone' => $hp,
+            'password' => $password,
+            'tanggallahir' => $tglLahir,
+            'jeniskelamin' => $jk,
+            'alamat' => $alamat,
+        );
+        $this->db->where('id_'.$type , $id_user);
+        $this->db->update($type,$data);
+        return $this->db->affected_rows();
     }
 
 
