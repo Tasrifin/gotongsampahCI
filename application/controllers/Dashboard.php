@@ -40,7 +40,7 @@ class Dashboard extends CI_Controller
             echo json_encode($dt);
         }
     }
-     
+
     public function konfirmasi()
     {
         $this->form_validation->set_rules(
@@ -59,7 +59,6 @@ class Dashboard extends CI_Controller
                 'msg' => $rsp,
             );
             echo json_encode($output);
-            
         } else {
             $id_donasi = $this->input->post('id_donasi');
             $id_creator = $this->input->post('creator');
@@ -67,7 +66,7 @@ class Dashboard extends CI_Controller
             $id_user = $this->session->user[0]['id_user'];
             $hp_mitra = $this->input->post('hp_mitra');
 
-            if($hp_mitra != null){
+            if ($hp_mitra != null) {
                 if ($id_user != $id_creator) {
                     $output = array(
                         'error' => true,
@@ -78,9 +77,9 @@ class Dashboard extends CI_Controller
                     $dataMitra = $this->DashboardModel->getMitraInfo($username_mitra);
                     if (isset($dataMitra)) {
                         $id_mitra = $dataMitra[0]['id_mitra'];
-    
+
                         $statDonasi = $this->DashboardModel->getData($id_donasi);
-                        if(is_null($statDonasi[0]->fkid_mitra)){
+                        if (is_null($statDonasi[0]->fkid_mitra)) {
                             $dataDonasi = $this->DashboardModel->konfirmasi_donasi($id_donasi, $id_creator, $id_mitra);
                             if ($dataDonasi) {
                                 $output = array(
@@ -96,14 +95,13 @@ class Dashboard extends CI_Controller
                                 );
                                 echo json_encode($output);
                             }
-                        }else{
+                        } else {
                             $output = array(
                                 'error' => true,
                                 'msg' => 'Konfirmasi pengambilan donasi gagal!',
                             );
                             echo json_encode($output);
-                        }   
-                        
+                        }
                     } else {
                         $output = array(
                             'error' => true,
@@ -112,15 +110,13 @@ class Dashboard extends CI_Controller
                         echo json_encode($output);
                     }
                 }
-            }else{
+            } else {
                 $output = array(
                     'error' => true,
                     'msg' => 'Nomor telfon mitra tidak ada, tidak dapat melakukan donasi!',
                 );
                 echo json_encode($output);
             }
-
-            
         }
     }
 
@@ -263,42 +259,42 @@ class Dashboard extends CI_Controller
                                     'error' => true,
                                     'msg' => "Gagal memperbaharui donasi berserta gambar",
                                 );
-                                if(is_readable('./cdn/img/'.$keypicker)){
-                                    unlink('./cdn/img/'.$keypicker);    
-                                } 
+                                if (is_readable('./cdn/img/' . $keypicker)) {
+                                    unlink('./cdn/img/' . $keypicker);
+                                }
                             } else {
                                 $resp = $this->DashboardModel->updateDonasi($id_donasi, $fkid_user, $judul, $jenis, $jumlah, $desc, $keypicker);
-                                if($resp){
+                                if ($resp) {
                                     $output = array(
                                         'error' => false,
                                         'msg' => "Berhasil memperbaharui donasi beserta gambar",
                                         'id' => $id_donasi,
                                     );
-                                    if(is_readable('./cdn/img/'.$this->input->post('gbr'))){
-                                        unlink('./cdn/img/'.$this->input->post('gbr'));
+                                    if (is_readable('./cdn/img/' . $this->input->post('gbr'))) {
+                                        unlink('./cdn/img/' . $this->input->post('gbr'));
                                     }
-                                }else{
+                                } else {
                                     $output = array(
                                         'error' => true,
                                         'msg' => "Gagal memperbaharui donasi berserta gambar",
                                     );
-                                    if(is_readable('./cdn/img/'.$keypicker)){
-                                        unlink('./cdn/img/'.$keypicker);    
+                                    if (is_readable('./cdn/img/' . $keypicker)) {
+                                        unlink('./cdn/img/' . $keypicker);
                                     }
-                                }                                
+                                }
                             }
                         } else {
                             $output = array(
                                 'error' => true,
                                 'msg' => $this->upload->display_errors(),
                             );
-                            if(is_readable('./cdn/img/'.$keypicker)){
-                                unlink('./cdn/img/'.$keypicker);    
+                            if (is_readable('./cdn/img/' . $keypicker)) {
+                                unlink('./cdn/img/' . $keypicker);
                             }
                         }
-                    }else{
+                    } else {
                         $keypicker = null;
-                        $resp = $this->DashboardModel->updateDonasi($id_donasi, $fkid_user, $judul, $jenis, $jumlah, $desc,$keypicker);
+                        $resp = $this->DashboardModel->updateDonasi($id_donasi, $fkid_user, $judul, $jenis, $jumlah, $desc, $keypicker);
                         if ($resp) {
                             $output = array(
                                 'error' => false,
@@ -310,13 +306,12 @@ class Dashboard extends CI_Controller
                                 'error' => true,
                                 'msg' => "Gagal memperbaharui donasi",
                             );
-                        }     
-
+                        }
                     }
                     echo json_encode($output);
                 }
             }
-        }else{
+        } else {
             redirect('dashboard/');
         }
     }
@@ -375,28 +370,28 @@ class Dashboard extends CI_Controller
                 $rsp_ = $rsp_['0'];
                 if (empty($rsp_['fkid_mitra']) && $rsp_['fkid_user'] == $myID) {
                     $dtx = $this->DashboardModel->getData($id_donasi);
-                    if(is_readable('./cdn/img/'.$dtx[0]->gambar)){
-                        unlink('./cdn/img/'.$dtx[0]->gambar);
+                    if (is_readable('./cdn/img/' . $dtx[0]->gambar)) {
+                        unlink('./cdn/img/' . $dtx[0]->gambar);
                         $rsp = $this->DashboardModel->deleteData($id_donasi);
-                        if($rsp){
+                        if ($rsp) {
                             $output = array(
                                 'stat' => 1,
                                 'msg' => "Donasi telah dihapus!"
-                            );   
-                        }else{
+                            );
+                        } else {
                             $output = array(
                                 'stat' => 1,
                                 'msg' => "Donasi gagal dihapus!"
                             );
                         }
-                    }else{
+                    } else {
                         $rsp = $this->DashboardModel->deleteData($id_donasi);
-                        if($rsp){
+                        if ($rsp) {
                             $output = array(
                                 'stat' => 1,
                                 'msg' => "Donasi telah dihapus!"
-                            );   
-                        }else{
+                            );
+                        } else {
                             $output = array(
                                 'stat' => 1,
                                 'msg' => "Donasi gagal dihapus!"
@@ -418,22 +413,7 @@ class Dashboard extends CI_Controller
         echo json_encode($output);
     }
 
-    public function file_check($str)
-    {
-        $allowed_mime_type_arr = array('image/gif', 'image/jpeg', 'image/pjpeg', 'image/png', 'image/x-png');
-        $mime = get_mime_by_extension($_FILES['input_foto']['name']);
-        if (isset($_FILES['input_foto']['name']) && $_FILES['input_foto']['name'] != "") {
-            if (in_array($mime, $allowed_mime_type_arr)) {
-                return true;
-            } else {
-                $this->form_validation->set_message('file_check', 'Please select only pdf/gif/jpg/png file.');
-                return false;
-            }
-        } else {
-            $this->form_validation->set_message('file_check', 'Please choose a file to upload.');
-            return false;
-        }
-    }
+
 
     public function addDonasi()
     {
@@ -464,15 +444,11 @@ class Dashboard extends CI_Controller
                 "'deskripsi donasi'",
                 'required|max_length[500]'
             );
-            if ($this->input->post('update_foto') == "Y") {
-                $this->form_validation->set_rules(
-                    'input_foto',
-                    "'Foto donasi'",
-                    'callback_file_check'
-                );
-            } else {
-                //do nothing
-            }
+            $this->form_validation->set_rules(
+                'input_foto',
+                "'Foto donasi'",
+                'callback_file_check'
+            );
 
             if ($this->form_validation->run() == FALSE) {
                 $output = array('error' => true);
@@ -486,107 +462,88 @@ class Dashboard extends CI_Controller
                 echo json_encode($output);
             } else {
                 $fkid_user = $this->session->user[0]['id_user'];
-                $id_donasi = $this->input->post('id_donasi');
                 $judul = $this->input->post('judul_donasi');
                 $jenis = $this->input->post('jenis_donasi');
                 $jumlah = $this->input->post('jumlah_donasi');
                 $desc = $this->input->post('deskripsi_donasi');
-                $desc = $desc . ' ';
-
-                if ($this->input->post('id_user') != $this->session->user[0]['id_user']) {
-                    $output = array(
-                        'error' => true,
-                        'msg' => "Tidak dapat merubah data milik orang lain",
-                    );
-                    echo json_encode($output);
-                } else {
-                    if ($this->input->post('update_foto') == "Y") {
-                        $keypicker = time() . $this->generateRandomString();
-                        $keypicker = $keypicker . '' . $_FILES['input_foto']['name'];
-                        $keypicker = preg_replace('/\s+/', '', $keypicker);
-                        $_FILES['input_foto']['name'] = $keypicker;
-                        $config['image_library'] = 'gd2';
-                        $config['upload_path'] = './cdn/img';
-                        $config['allowed_types'] = 'gif|jpg|png|jpeg|pjpeg|x-png';
-                        $config['max_size'] = 2048;
-                        $this->load->library('upload');
-                        $this->upload->initialize($config);
-                        if ($this->upload->do_upload('input_foto')) {
-                            $gbr = $this->upload->data();
-                            $config['image_library'] = 'gd2';
-                            $config['source_image'] = './cdn/img/' . $gbr['file_name'];
-                            $config['create_thumb'] = FALSE;
-                            $config['maintain_ratio'] = FALSE;
-                            $config['quality'] = '50%';
-                            $config['width'] = 800;
-                            $config['height'] = 500;
-                            $config['new_image'] = './cdn/img/' . $gbr['file_name'];
-                            $this->load->library('image_lib', $config);
-                            if (!$this->image_lib->resize()) {
-                                $output = array(
-                                    'error' => true,
-                                    'msg' => "Gagal memperbaharui donasi berserta gambar",
-                                );
-                                if(is_readable('./cdn/img/'.$keypicker)){
-                                    unlink('./cdn/img/'.$keypicker);    
-                                } 
-                            } else {
-                                $resp = $this->DashboardModel->updateDonasi($id_donasi, $fkid_user, $judul, $jenis, $jumlah, $desc, $keypicker);
-                                if($resp){
-                                    $output = array(
-                                        'error' => false,
-                                        'msg' => "Berhasil memperbaharui donasi beserta gambar",
-                                        'id' => $id_donasi,
-                                    );
-                                    if(is_readable('./cdn/img/'.$this->input->post('gbr'))){
-                                        unlink('./cdn/img/'.$this->input->post('gbr'));
-                                    }
-                                }else{
-                                    $output = array(
-                                        'error' => true,
-                                        'msg' => "Gagal memperbaharui donasi berserta gambar",
-                                    );
-                                    if(is_readable('./cdn/img/'.$keypicker)){
-                                        unlink('./cdn/img/'.$keypicker);    
-                                    }
-                                }                                
-                            }
-                        } else {
-                            $output = array(
-                                'error' => true,
-                                'msg' => $this->upload->display_errors(),
-                            );
-                            if(is_readable('./cdn/img/'.$keypicker)){
-                                unlink('./cdn/img/'.$keypicker);    
-                            }
+                $path = $_FILES['input_foto']['name'];
+                $ext = pathinfo($path, PATHINFO_EXTENSION);
+                $keypicker = time() . $this->generateRandomString() . $_FILES['input_foto']['name'];
+                $keypicker = hash('sha512',$keypicker).'.'.$ext;
+                $keypicker = preg_replace('/\s+/', '', $keypicker);
+                $_FILES['input_foto']['name'] = $keypicker;
+                $config['image_library'] = 'gd2';
+                $config['upload_path'] = './cdn/img';
+                $config['allowed_types'] = 'gif|jpg|png|jpeg|pjpeg|x-png';
+                $config['max_size'] = 2048;
+                $this->load->library('upload');
+                $this->upload->initialize($config);
+                if ($this->upload->do_upload('input_foto')) {
+                    $gbr = $this->upload->data();
+                    $config['image_library'] = 'gd2';
+                    $config['source_image'] = './cdn/img/' . $gbr['file_name'];
+                    $config['create_thumb'] = FALSE;
+                    $config['maintain_ratio'] = FALSE;
+                    $config['quality'] = '50%';
+                    $config['width'] = 800;
+                    $config['height'] = 500;
+                    $config['new_image'] = './cdn/img/' . $gbr['file_name'];
+                    $this->load->library('image_lib', $config);
+                    if (!$this->image_lib->resize()) {
+                        $output = array(
+                            'error' => true,
+                            'msg' => "Gagal menambahkan donasi",
+                        );
+                        if (is_readable('./cdn/img/' . $keypicker)) {
+                            unlink('./cdn/img/' . $keypicker);
                         }
-                    }else{
-                        $keypicker = null;
-                        $resp = $this->DashboardModel->updateDonasi($id_donasi, $fkid_user, $judul, $jenis, $jumlah, $desc,$keypicker);
+                    } else {
+                        $resp = $this->DashboardModel->addDonasi($fkid_user, $judul, $jenis, $jumlah, $desc, $keypicker);
                         if ($resp) {
                             $output = array(
                                 'error' => false,
-                                'msg' => "Berhasil memperbaharui donasi",
-                                'id' => $id_donasi,
+                                'msg' => "Berhasil menambahkan donasi beserta gambar"
                             );
                         } else {
                             $output = array(
                                 'error' => true,
-                                'msg' => "Gagal memperbaharui donasi",
+                                'msg' => "Gagal menambahkan donasi berserta gambar",
                             );
-                        }     
-
+                            if (is_readable('./cdn/img/' . $keypicker)) {
+                                unlink('./cdn/img/' . $keypicker);
+                            }
+                        }
                     }
-                    echo json_encode($output);
+                } else {
+                    $output = array(
+                        'error' => true,
+                        'msg' => $this->upload->display_errors(),
+                    );
+                    if (is_readable('./cdn/img/' . $keypicker)) {
+                        unlink('./cdn/img/' . $keypicker);
+                    }
                 }
+                echo json_encode($output);
             }
-        }else{
+        } else {
             redirect('dashboard/');
         }
     }
 
-
-
-
+    public function file_check($str)
+    {
+        $allowed_mime_type_arr = array('image/gif', 'image/jpeg', 'image/pjpeg', 'image/png', 'image/x-png');
+        $mime = get_mime_by_extension($_FILES['input_foto']['name']);
+        if (isset($_FILES['input_foto']['name']) && $_FILES['input_foto']['name'] != "") {
+            if (in_array($mime, $allowed_mime_type_arr)) {
+                return true;
+            } else {
+                $this->form_validation->set_message('file_check', 'Please select only pdf/gif/jpg/png file.');
+                return false;
+            }
+        } else {
+            $this->form_validation->set_message('file_check', 'Please choose a file to upload.');
+            return false;
+        }
+    }
 }
-

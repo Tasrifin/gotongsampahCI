@@ -25,5 +25,5 @@
     var baseURL = "<?= base_url() ?>";
     var pagesType = '';
 </script>
-<script type="text/javascript" src="<?php echo base_url() ?>static/js/ajax.js"></script>
+<script type="text/javascript" src="<?php echo base_url() ?>static/js/gotongsampah.js"></script>
 </head>

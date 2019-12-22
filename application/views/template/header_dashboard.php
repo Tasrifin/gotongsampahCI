@@ -56,12 +56,12 @@
 
                 <div class="collapse navbar-collapse justify-content-end" id="navbar">
                     <ul class="navbar-nav align-items-center">
-                        <li><a class="btn btn-theme-yellow" href="<?= base_url()?>dashboard/">Home</a></li>
+                        <li><a id="home_btn" class="btn btn-theme-yellow" href="<?= base_url()?>dashboard/">Home</a></li>
                         <?php
                         //if for user or mitra
                         if ($type == 'user') {
                             ?>
-                            <li><a class="btn btn-theme-yellow btn_Donasi" href="input_donasi.php">DONASI SEKARANG</a></li>
+                            <li><a id="header_addDonasi" class="btn btn-theme-yellow btn_Donasi" style="color:white">DONASI SEKARANG</a></li>
                         <?php
                         } else {
                             //nothing to show

@@ -32,14 +32,6 @@
                         <button type="button" class="btn btn-theme-2nd " style="border-radius:25px;" value="submit_login" id="Login_Submit" name="submit">Masuk</button>
                     </div>
                     </form>
-                    <div class="form-inline mt-5">
-                        <label class="mr-3 col-sm-12">Atau Daftar Dengan : </label>
-                        <button type="button" class="btn btn-light mt-sm-3 col-sm-6" style="border-radius:25px;font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;"><i
-                                class="fab fa-facebook-f pr-2 text-center" style="font-size:20px;color: #5770A6;"> </i>
-                            Facebook</button>
-                        <button type="button" class="btn btn-light mt-sm-3 col-sm-6" style="border-radius:25px;font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;"><i
-                                class="fab fa-google pr-2 text-center" style="font-size:20px;color: #E06555;"> </i> Google</button>
-                </div>
             </div>
         </div>
     </div>

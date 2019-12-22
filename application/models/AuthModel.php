@@ -9,15 +9,24 @@ class AuthModel extends CI_Model{
         return $data->result_array();
     }
 
-    public function trySignup($username,$password,$email,$type)
+    public function trySignup($username,$password,$email,$type, $activationCode)
     {
         $data = array(
             'username'  => $username,
             'password'  => $password,
             'email'     => $email,
+            'activationCode'     => $activationCode,
         );
         $response = $this->db->insert($type,$data);
         return $response;
+    }
+
+    public function activate($type, $activationCode)
+    {
+        $this->db->set('activationCode', null);
+        $this->db->where('activationCode', $activationCode);
+        $this->db->update($type);
+        return $this->db->affected_rows();
     }
 
 }

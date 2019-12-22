@@ -35,7 +35,7 @@ class ProfileModel extends CI_Model
 
     }
 
-    public function updateUsrInfo($id_user,$nama, $email, $alamat, $tglLahir, $hp, $jk, $password, $type){
+    public function updateUsrInfo($id_user,$nama, $email, $alamat, $tglLahir, $hp, $jk, $password, $type, $activationCode){
         $data = array(
             'email' => $email,
             'nama' => $nama,
@@ -44,11 +44,11 @@ class ProfileModel extends CI_Model
             'tanggallahir' => $tglLahir,
             'jeniskelamin' => $jk,
             'alamat' => $alamat,
+            'activationCode' => $activationCode,
         );
         $this->db->where('id_'.$type , $id_user);
         $this->db->update($type,$data);
         return $this->db->affected_rows();
     }
-
 
 }

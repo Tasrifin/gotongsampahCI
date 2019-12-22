@@ -3,8 +3,10 @@
     var type = '<?php echo $type ?>';
     var my_id = '<?php echo $session_data[0]["id_" . $type] ?>';
     var pagesType = 'dashboard';
+    $('#home_btn').addClass('d-none');
 </script>
-<script type="text/javascript" src="<?php echo base_url() ?>static/js/ajax.js"></script>
+<script type="text/javascript" src="<?php echo base_url() ?>static/js/gotongsampah.js"></script>
+
 
 <main>
     <!-- Selamat Datang -->
@@ -223,10 +225,10 @@
                                 <div id="pilih_gambar" class="form-group d-none">
                                     <label for="up_foto" class="text-black">Upload Foto Sampahmu :</label>
                                     <div class="custom-file">
-                                        <input type="file" name="input_foto" class="custom-file-input" id="input_foto" onchange="ShowImage(this)">
+                                        <input type="file" name="input_foto" class="custom-file-input" id="input_foto" onchange="ShowImage(this,'imgUpdate')">
                                         <label class="custom-file-label" for="customFile">Pilih file</label>
                                     </div>
-                                    <div id="img"></div>
+                                    <div id="imgUpdate"></div>
                                 </div>
                             </form>
                         </div>
@@ -238,7 +240,7 @@
                 </div>
             </div>
 
-            <!-- Modal Edit -->
+            <!-- Modal add -->
             <div class="modal fade" id="add_modal" tabindex="-1" role="dialog">
                 <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                     <div class="modal-content">
@@ -249,7 +251,7 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                        <form id="edit_form" enctype="multipart/form-data">
+                        <form id="add_form" enctype="multipart/form-data">
                                 <div>
                                     <label id="" for="judul_donasi">Judul Donasi</label>
                                     <div class="input-group mb-3">
@@ -260,7 +262,7 @@
                                 <div class="form-group">
                                     <label for="jenis_sampah">Jenis Sampah</label>
                                     <select name="jenis_donasi" id="jenis_donasi" class="custom-select" required>
-                                        <option value="" selected disabled>Pilih</option>
+                                        <option value="0" selected disabled>Pilih</option>
                                         <option value="Plastik">Plastik</option>
                                         <option value="Kertas">Kertas</option>
                                         <option value="Botol">Botol</option>
@@ -285,11 +287,12 @@
                                 <div id="pilih_gambar" class="form-group">
                                     <label for="up_foto" class="text-black">Upload Foto Sampahmu :</label>
                                     <div class="custom-file">
-                                        <input type="file" name="input_foto" class="custom-file-input" id="input_foto" onchange="ShowImage(this)">
+                                        <input type="file" name="input_foto" class="custom-file-input" id="input_foto" onchange="ShowImage(this,'imgAdd')">
                                         <label class="custom-file-label" for="customFile">Pilih file</label>
                                     </div>
-                                    <div id="img"></div>
+                                    
                                 </div>
+                                <div id="imgAdd"></div>
                             </form>
                         </div>
                         <div class="modal-footer">
@@ -299,7 +302,6 @@
                     </div>
                 </div>
             </div>
-
 
             <div id="place_data" class="row">
                 <!--

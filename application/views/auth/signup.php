@@ -42,14 +42,7 @@
                     <button type="button" id="SignUp_Submit" name="submit" class="btn btn-theme-2nd" name="submit" value="submit_signup" style="border-radius:25px;">Daftar</button>
                     </div>
                 </form>
-                <div class="form-inline mt-3">
-                    <label class="mr-3 col-sm-12">Atau Daftar Dengan : </label>
-                    <button type="button" class="btn btn-light mt-sm-3 col-sm-6" style="border-radius:25px;font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;"><i
-                            class="fab fa-facebook-f pr-2 text-center" style="font-size:20px;color: #5770A6;"> </i>
-                        Facebook</button>
-                    <button type="button" class="btn btn-light mt-sm-3 col-sm-6" style="border-radius:25px;font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;"><i
-                            class="fab fa-google pr-2 text-center" style="font-size:20px;color: #E06555;"> </i> Google</button>
-                </div>
+                
             </div>
         </div>
     </div>

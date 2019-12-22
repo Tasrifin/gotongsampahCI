@@ -118,13 +118,17 @@ class Auth extends CI_Controller {
 				$password = $this->input->post('password');
 				if(isset($username) && isset($email) && isset($password)){
 					$password = md5($password);
-					$signup = $this->AuthModel->trySignup($username, $password, $email, $type);
+					$activationCode = time().$username.$email.time();
+					$activationCode = hash( 'sha256', md5($activationCode));
+					$signup = $this->AuthModel->trySignup($username, $password, $email, $type, $activationCode);
 					if($signup){
+						$this->sendMail($email,$activationCode , $type);
 						$data = array(
 							'title'				=> 'Signup ke Gotong Sampah',
 							'error'	=> false,
-							'msg'	=> 'Berhasil mendaftarkan akun!',
+							'msg'	=> 'Berhasil mendaftarkan akun, silahkan aktivasi email anda!',
 						);
+						
 					}else{
 						$data = array(
 							'title'				=> 'Signup ke Gotong Sampah',
@@ -144,6 +148,25 @@ class Auth extends CI_Controller {
 		
 	}
 
+	public function activate()
+	{
+		$type = $this->uri->segment(3);
+		$activationCode = $this->uri->segment(4);
+		$result = $this->AuthModel->activate($type,$activationCode);
+		if($result == 1)
+		{
+			$this->session->sess_destroy();
+			?>
+			<script>alert("Aktivasi email berhasil"); window.location="<?= base_url() ?>auth/login"</script>	
+			<?php
+			
+		}else{
+			?>
+			<script>alert("Data tidak ditemukan!"); window.location="<?= base_url() ?>auth/login"</script>	
+			<?php
+		}
+	}
+
 	public function sessionCheck()
 	{
 		echo "<pre>";
@@ -161,5 +184,46 @@ class Auth extends CI_Controller {
         else{
             
         }
-    }
+	}
+	
+	public function sendMail($email, $activationCode,$type)
+	{
+		$config = array(
+			'protocol' => 'smtp', // 'mail', 'sendmail', or 'smtp'
+			'smtp_host' => 'ssl://smtp.ekal.best',
+			'smtp_port' => 465,
+			'smtp_user' => 'noreply@ekal.best',
+			'smtp_pass' => 'kaskus123',
+			'mailtype' => 'html', //plaintext 'text' mails or 'html'
+			'charset' => 'iso-8859-1',
+		);
+		
+		  $message = 	"
+		  <html>
+		  <head>
+			  <title>Verification Code</title>
+		  </head>
+		  <body>
+			  <h2>Thank you for Registering on Gotong Sampah.</h2>
+			  <p>Please click the link below to activate your account.</p>
+			  <h4><a href='".base_url()."auth/activate/".$type."/".$activationCode."'>Activate My Account</a></h4>
+		  </body>
+		  </html>
+		  ";
+		  $this->load->library('email', $config);
+		  $this->email->set_newline("\r\n");
+		  $this->email->from($config['smtp_user']);
+		  $this->email->to($email);
+		  $this->email->subject('Signup Verification Email');
+		  $this->email->message($message);
+
+		  //sending email
+		  if($this->email->send()){
+			  $this->session->set_flashdata('message','Activation code sent to email');
+		  }
+		  else{
+			  $this->session->set_flashdata('message', $this->email->print_debugger());
+
+		  }
+	}
 }
