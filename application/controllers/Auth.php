@@ -126,7 +126,7 @@ class Auth extends CI_Controller {
 						$data = array(
 							'title'				=> 'Signup ke Gotong Sampah',
 							'error'	=> false,
-							'msg'	=> 'Berhasil mendaftarkan akun, silahkan aktivasi email anda!',
+							'msg'	=> 'Berhasil mendaftarkan akun, silahkan aktivasi email anda! Jika email tidak ada di inbox, silahkan cek pada bagian spam!',
 						);
 						
 					}else{
@@ -206,7 +206,7 @@ class Auth extends CI_Controller {
 		  <body>
 			  <h2>Thank you for Registering on Gotong Sampah.</h2>
 			  <p>Please click the link below to activate your account.</p>
-			  <h4><a href='".base_url()."auth/activate/".$type."/".$activationCode."'>Activate My Account</a></h4>
+			  <h4>".base_url() . "auth/activate/" . $type . "/" . $activationCode."</h4>
 		  </body>
 		  </html>
 		  ";

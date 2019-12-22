@@ -98,7 +98,7 @@ class Profile extends CI_Controller
                             if ($response) {
                                 $data = array(
                                     'error'    => false,
-                                    'msg'    => 'Berhasil melakukan perubahan data! Silahkan aktivasi ulang email baru anda!',
+                                    'msg'    => 'Berhasil melakukan perubahan data! Silahkan aktivasi ulang email baru anda! Jika email tidak ada di inbox anda, silahkan cek pada bagian spam!',
                                 );
                             } else {
                                 $data = array(
@@ -220,7 +220,7 @@ class Profile extends CI_Controller
 		  <body>
 			  <h2>Your email has been updated</h2>
 			  <p>Please click the link below to re-activate your account.</p>
-			  <h4><a href='" . base_url() . "profile/activate/" . $type . "/" . $activationCode . "'>Activate My Account</a></h4>
+			  <h4>".base_url() . "profile/activate/" . $type . "/" . $activationCode."</h4>
 		  </body>
 		  </html>
 		  ";

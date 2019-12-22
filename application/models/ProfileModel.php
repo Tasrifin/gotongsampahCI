@@ -36,16 +36,29 @@ class ProfileModel extends CI_Model
     }
 
     public function updateUsrInfo($id_user,$nama, $email, $alamat, $tglLahir, $hp, $jk, $password, $type, $activationCode){
-        $data = array(
-            'email' => $email,
-            'nama' => $nama,
-            'handphone' => $hp,
-            'password' => $password,
-            'tanggallahir' => $tglLahir,
-            'jeniskelamin' => $jk,
-            'alamat' => $alamat,
-            'activationCode' => $activationCode,
-        );
+        if($activationCode == null)
+        {
+            $data = array(
+                'email' => $email,
+                'nama' => $nama,
+                'handphone' => $hp,
+                'password' => $password,
+                'tanggallahir' => $tglLahir,
+                'jeniskelamin' => $jk,
+                'alamat' => $alamat,
+            );
+        }else{
+            $data = array(
+                'email' => $email,
+                'nama' => $nama,
+                'handphone' => $hp,
+                'password' => $password,
+                'tanggallahir' => $tglLahir,
+                'jeniskelamin' => $jk,
+                'alamat' => $alamat,
+                'activationCode' => $activationCode,
+            );
+        }
         $this->db->where('id_'.$type , $id_user);
         $this->db->update($type,$data);
         return $this->db->affected_rows();
