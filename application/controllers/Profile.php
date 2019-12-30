@@ -206,7 +206,7 @@ class Profile extends CI_Controller
             'protocol' => 'smtp',
             'smtp_host' => 'ssl://smtp.ekal.best',
             'smtp_port' => 465,
-            'smtp_user' => 'noreply@ekal.best',
+            'smtp_user' => '<a href="mailto:noreply@ekal.best" rel="nofollow">noreply@ekal.best</a>',
             'smtp_pass' => 'kaskus123',
             'mailtype' => 'html',
             'charset' => 'iso-8859-1',
