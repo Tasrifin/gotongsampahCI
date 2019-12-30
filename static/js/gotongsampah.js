@@ -1,7 +1,6 @@
 $(document).ready(function() {
 	//fetch data
 	//console.log("Document ready, library has been loaded!");
-
 	if (pagesType == "dashboard") {
 		getData();
 	} else if (pagesType == "history") {
@@ -200,43 +199,9 @@ $(document).ready(function() {
 
 	$("#add_modal").on("click", "#add_submit", function() {
 		var postData = new FormData($("#add_form")[0]);
-		checkData('AddData',postData,'function');		
+		checkData("AddData", postData, "function");
 	});
-	
 });
-
-var data_detail = {
-	title: $("#detail_modal")
-		.find(".modal-title")
-		.text(),
-	jenis_donasi: $("#detail_modal")
-		.find(".jenis_donasi")
-		.text(),
-	jumlah_donasi: $("#detail_modal")
-		.find(".jumlah_donasi")
-		.text(),
-	informasi_donasi: $("#detail_modal")
-		.find(".informasi_donasi")
-		.text(),
-	donatur_donasi: $("#detail_modal")
-		.find(".donatur_donasi")
-		.text(),
-	kontak_donasi: $("#detail_modal")
-		.find(".kontak_donasi")
-		.text(),
-	alamat_donasi: $("#detail_modal")
-		.find(".alamat_donasi")
-		.text()
-};
-var title_konfirmasi = $("#konfirmasi_")
-	.find(".modal-title")
-	.text();
-var title = $("#edit_")
-	.find(".modal-title")
-	.text();
-var del_title = $("#delete_")
-	.find(".modal-title")
-	.text();
 
 //Check data about user info
 function checkData(data, params, TypeOf) {
@@ -431,6 +396,20 @@ function editSubmit(postData) {
 		}
 	});
 }
+
+var data_detail = {
+	title: "Detail Donasi #",
+	jenis_donasi: "Jenis : ",
+	jumlah_donasi: "Jumlah : ",
+	informasi_donasi: "Deskripsi : ",
+	donatur_donasi: "Donatur : ",
+	kontak_donasi: "Kontak Donatur : ",
+	alamat_donasi: "Alamat Donatur : "
+};
+var title_konfirmasi = "Konfirmasi Pengambilan Donasi #";
+var title = "Edit Donasi #";
+var del_title = "Hapus Donasi #";
+
 //Edit::ShowIMG
 function ShowImage(input, ids) {
 	var element = document.getElementById("" + ids);
@@ -491,6 +470,7 @@ function getDataDetail(id) {
 				if (stat === false) {
 					dt.gambar = "404.jpeg";
 				}
+				console.log(data_detail.title);
 				$("#detail_modal")
 					.find(".card-title")
 					.text(dt.Judul_Donasi);
@@ -926,4 +906,3 @@ function AddData(postData) {
 		}
 	});
 }
-
